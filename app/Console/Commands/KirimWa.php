@@ -41,7 +41,7 @@ class KirimWa extends Command
         $url   = 'http://api.mas-adi.net/api/v1/messages'; // URL API
         $token = 'dk_b86ca5c34b3644838a59d980e50c8a5a';
         $data_post = [
-            "recipient_type" => "individual",
+            "recipient_type" => ($this->argument('is_group')) ? "individual" : 'group',
             "to" => $this->argument('no'),
             "type" => "text",
             "text" => [
