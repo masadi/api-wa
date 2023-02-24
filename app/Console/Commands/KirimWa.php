@@ -49,9 +49,6 @@ class KirimWa extends Command
             ]
         ];
         $response = Http::withToken($token)->post($url, $data_post);
-        /*$response = Http::withHeaders([
-            'Authorization' => 'Bearer a38b622c-55c8-4620-a1ad-8f70798756c7',
-        ])->post($url, $data_post);*/
         $this->info($response->status());
         dump($response);
         dd($response->json());
