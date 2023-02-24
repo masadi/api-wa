@@ -11,7 +11,7 @@ class WaController extends Controller
     public function index(){
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
-        Storage::disk('public')->put('test.json', json_decode($json));
+        Storage::disk('public')->put('test.json', $json);
         $data = [];
         return response()->json($data);
     }
