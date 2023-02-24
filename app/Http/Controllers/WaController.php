@@ -12,6 +12,7 @@ class WaController extends Controller
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('test.json', json_encode($json));
+        Storage::disk('public')->put('nama.txt', $json['chat']);
         $data = [];
         return response()->json($data);
     }
