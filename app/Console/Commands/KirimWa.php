@@ -42,7 +42,7 @@ class KirimWa extends Command
         $token = 'dk_b86ca5c34b3644838a59d980e50c8a5a';
         $data_post = [
             "recipient_type" => "individual",
-            "to" => "62".$this->argument('no'),
+            "to" => $this->argument('no'),
             "type" => "text",
             "text" => [
                 "body" => $this->argument('text')
