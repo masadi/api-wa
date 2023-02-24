@@ -38,8 +38,8 @@ class KirimWa extends Command
      */
     public function handle()
     {
-        $url   = config('wa.api_url');//'http://api.mas-adi.net/api/v1/messages'; // URL API
-        $token = config('wa.api_key');//'dk_b86ca5c34b3644838a59d980e50c8a5a';
+        $url   = config('wa.api_url');
+        $token = config('wa.api_key');
         $data_post = [
             "recipient_type" => ($this->argument('is_group')) ? "group" : "individual",
             "to" => $this->argument('no'),
