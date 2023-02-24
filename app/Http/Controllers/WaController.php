@@ -9,9 +9,9 @@ use Storage;
 class WaController extends Controller
 {
     public function index(){
-        $rawdata = file_get_contents("php://input");
-		$json = json_decode($rawdata, true);
-        Storage::disk('public')->put('test.json', $json);
+        //$rawdata = file_get_contents("php://input");
+		//$json = json_decode($rawdata, true);
+        Storage::disk('public')->put('test.json', json_decode(request()->all()));
         $data = [];
         return response()->json($data);
     }
