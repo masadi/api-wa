@@ -12,7 +12,7 @@ class KirimWa extends Command
      *
      * @var string
      */
-    protected $signature = 'kirim:wa {no} {text}';
+    protected $signature = 'kirim:wa {no} {text} {is_group} {nama}';
 
     /**
      * The console command description.
@@ -45,7 +45,7 @@ class KirimWa extends Command
             "to" => $this->argument('no'),
             "type" => "text",
             "text" => [
-                "body" => $this->argument('text')
+                "body" => 'Halo '.$this->argument('nama').'. Ini adalah jawaban otomatis '.$this->argument('text')
             ]
         ];
         $response = Http::withToken($token)->post($url, $data_post);

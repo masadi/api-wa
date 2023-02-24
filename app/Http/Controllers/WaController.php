@@ -23,8 +23,10 @@ class WaController extends Controller
 
         }
         Artisan::call('kirim:wa', [
-            'no' => $json['sender_phone'],
+            'no' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
             'text' => 'ini reply text',
+            'is_group' => $json['is_group'],
+            'nama' => $json['sender_push_name'],
         ]);
         $data = [];
         return response()->json($data);
