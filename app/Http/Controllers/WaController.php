@@ -39,7 +39,6 @@ class WaController extends Controller
                     $data_post = $this->button_kategori($json['message_text_id'], $recipient_type, $to, $json['sender_push_name'], $json['message_text']);
                 } elseif(Str::contains($json['message_text_id'], 'pesan')){
                     $pesan_id = str_replace('pesan-', '', $json['message_text_id']);
-                    //$data_post = $this->kirim_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
                     $data_post = [
                         'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
@@ -53,7 +52,6 @@ class WaController extends Controller
                 }
             } else {
                 if(strtolower($json['message_text']) == 'halo'){
-                    //$data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
                     $data_post = [
                         'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
@@ -63,7 +61,6 @@ class WaController extends Controller
                         ]
                     ];
                 } elseif(strtolower($json['message_text']) == 'Menu Awal'){
-                    //echo $int;
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 } elseif(Str::contains($json['message_text'], 'NPSN')){
                     $int = filter_var($json['message_text'], FILTER_SANITIZE_NUMBER_INT);
@@ -226,68 +223,6 @@ class WaController extends Controller
                 ],
             ],
         ]; 
-        return $data_post;
-    }
-    private function list_text($message_text_id){
-        $collection = collect([
-            ['message_text_id' => 1, 'title' => 'Merah', 'description' => 'Deskripsi warna Merah'],
-            ['message_text_id' => 2, 'title' => 'Putih', 'description' => 'Deskripsi warna Putih'],
-            ['message_text_id' => 3, 'title' => 'Hijau', 'description' => 'Deskripsi warna Hijau'],
-            ['message_text_id' => 4, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
-            ['message_text_id' => 5, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
-            ['message_text_id' => 6, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
-        ]);
-        return $collection->firstWhere('message_text_id', $message_text_id);
-        //return $collection;
-    }
-    private function interactive($recipient_type, $to, $nama){
-        $data_post = [
-            'recipient_type' => $recipient_type, 
-            'to' => $to, 
-            'type' => 'interactive', 
-            'interactive' => [
-                'type' => 'list', 
-                'header' => [
-                    'text' => 'Halo Bapak/Ibu '.$nama 
-                ], 
-                'body' => [
-                    'text' => 'Silahkan lengkapi alamat Anda terlebih dahulu' 
-                ], 
-                'footer' => [
-                    'text' => 'Pilih Provinsi' 
-                ], 
-                'action' => [
-                    'button' => 'Provinsi', 
-                    'sections' => [
-                        [
-                            'title' => 'Section 1', 
-                            'rows' => [
-                                [
-                                    'id' => 'section.1.1', 
-                                    'title' => 'Red', 
-                                    'description' => 'Deskripsi warna' 
-                                ], 
-                                [
-                                    'id' => 'section.1.2', 
-                                    'title' => 'Blue', 
-                                    'description' => 'Deskripsi warna' 
-                                ],
-                            ],
-                        ], 
-                        [
-                            'title' => 'Section 2', 
-                            'rows' => [
-                                [
-                                    'id' => 'section.2', 
-                                    'title' => 'Green', 
-                                    'description' => 'Deskripsi warna' 
-                                ], 
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
         return $data_post;
     }
 }
