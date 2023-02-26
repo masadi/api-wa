@@ -76,7 +76,7 @@ class WaController extends Controller
         }
     }
     private function kirim_pesan($pesan_id){
-        $data = Pesan::find($find);
+        $data = Pesan::find($pesan_id);
         return $data->deskripsi;
     }
     private function button_pesan($message_text_id, $recipient_type, $to, $nama, $judul){
