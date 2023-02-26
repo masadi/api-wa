@@ -109,6 +109,7 @@ class WaController extends Controller
                 ],
             ];
         }
+        Storage::disk('public')->put('isi_button.json', json_encode($buttons));
         $data_post = [
             'recipient_type' => $recipient_type, 
             'to' => $to, 
