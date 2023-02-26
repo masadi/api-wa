@@ -23,7 +23,7 @@ class PesanSeeder extends Seeder
                 'pesan' => [
                     [
                         'judul' => 'Cara menggunakan database versi 5.x di versi 6.x',
-                        'deskripsi' => '- Matikan services eRaporSMKDB'."\n".'- copy folder eRaporSMK di drive C, amankan di drive lain'."\n".'- Uninstall e-Rapor SMK versi 5'."\n".'- Restart Komputer/Laptop'."\n".'- Install eRapor SMK versi 6'."\n".'- Matikan services eRaporSMKDB'."\n".'- Hapus folder '."\n".'database di folder C:\eRaporSMK'."\n".'- Copy folder database hasil backup di atas dan paste di folder C:\eRaporSMK'."\n".'- Jalankan services eRaporSMKDB'."\n".'- Buka folder C:\eRaporSMK\updater'."\n".'- Klik kanan file update-erapor.bat dan pilih Run as Administrator'."\n".'- Klik kanan file symlink.bat dan pilih Run as Administrator'."\n".'- Selesai',
+                        'deskripsi' => '- Matikan services eRaporSMKDB'."\n".'- copy folder eRaporSMK di drive C, amankan di drive lain'."\n".'- Uninstall e-Rapor SMK versi 5'."\n".'- Restart Komputer/Laptop'."\n".'- Install eRapor SMK versi 6'."\n".'- Matikan services eRaporSMKDB'."\n".'- Hapus folder database di folder C:\eRaporSMK'."\n".'- Copy folder database hasil backup di atas dan paste di folder C:\eRaporSMK'."\n".'- Jalankan services eRaporSMKDB'."\n".'- Buka folder C:\eRaporSMK\updater'."\n".'- Klik kanan file update-erapor.bat dan pilih Run as Administrator'."\n".'- Klik kanan file symlink.bat dan pilih Run as Administrator'."\n".'- Selesai',
                     ],
                     [
                         'judul' => 'Services eRaporSMKDB tidak bisa running',
