@@ -62,7 +62,7 @@ class WaController extends Controller
                     ];
                 } elseif(strtolower($json['message_text']) == 'Menu Awal'){
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
-                } elseif(Str::contains($json['message_text'], 'NPSN')){
+                } elseif(Str::contains(strtolower($json['message_text']), 'npsn')){
                     $int = filter_var($json['message_text'], FILTER_SANITIZE_NUMBER_INT);
                     Storage::disk('public')->put('npsn.txt', $int);
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
