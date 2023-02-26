@@ -11,7 +11,7 @@ class Kategori extends Model
     protected $table = 'kategori';
 	protected $guarded = [];
 	public function childs(){
-		return $this->haMany(Kategori::class, 'id', 'kategori_id');
+		return $this->hasMany(Kategori::class, 'id', 'kategori_id');
 	}
     public function parent()
     {
