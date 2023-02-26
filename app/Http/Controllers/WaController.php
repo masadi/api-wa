@@ -58,7 +58,7 @@ class WaController extends Controller
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
                         'type' => 'text',
                         'text' => [
-                            'body' => 'Halo '.$json['sender_push_name'].'. Ini adalah jawaban otomatis'
+                            'body' => 'Halo '.$json['sender_push_name'].'. Untuk proses tracking Bantuan, silahkan isi Data dibawah ini:'."\n"."\n".'Nama                	:'."\n".'Nama Sekolah              	:'."\n".'NPSN               	:'
                         ]
                     ];
                 }
