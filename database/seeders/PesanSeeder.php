@@ -23,24 +23,11 @@ class PesanSeeder extends Seeder
                 'pesan' => [
                     [
                         'judul' => 'Cara menggunakan database versi 5.x di versi 6.x',
-                        'deskripsi' => '- Matikan services eRaporSMKDB
-                        - copy folder eRaporSMK di drive C, amankan di drive lain
-                        - Uninstall e-Rapor SMK versi 5
-                        - Restart Komputer/Laptop
-                        - Install eRapor SMK versi 6
-                        - Matikan services eRaporSMKDB
-                        - Hapus folder database di folder C:\eRaporSMK
-                        - Copy folder database hasil backup di atas dan paste di folder C:\eRaporSMK
-                        - Jalankan services eRaporSMKDB
-                        - Buka folder C:\eRaporSMK\updater
-                        - Klik kanan file update-erapor.bat dan pilih Run as Administrator
-                        - Klik kanan file symlink.bat dan pilih Run as Administrator
-                        - Selesai',
+                        'deskripsi' => '- Matikan services eRaporSMKDB'."\n".'- copy folder eRaporSMK di drive C, amankan di drive lain'."\n".'- Uninstall e-Rapor SMK versi 5'."\n".'- Restart Komputer/Laptop'."\n".'- Install eRapor SMK versi 6'."\n".'- Matikan services eRaporSMKDB'."\n".'- Hapus folder '."\n".'database di folder C:\eRaporSMK'."\n".'- Copy folder database hasil backup di atas dan paste di folder C:\eRaporSMK'."\n".'- Jalankan services eRaporSMKDB'."\n".'- Buka folder C:\eRaporSMK\updater'."\n".'- Klik kanan file update-erapor.bat dan pilih Run as Administrator'."\n".'- Klik kanan file symlink.bat dan pilih Run as Administrator'."\n".'- Selesai',
                     ],
                     [
                         'judul' => 'Services eRaporSMKDB tidak bisa running',
-                        'deskripsi' => '- Masuk ke folder C:\eRaporSMK\webserver\bin, cari file pg_ctl.bat
-                        - Klik kanan file tersebut dan klik Run as Administrator',
+                        'deskripsi' => '- Masuk ke folder C:\eRaporSMK\webserver\bin, cari file pg_ctl.bat'."\n".'- Klik kanan file tersebut dan klik Run as Administrator',
                     ]
                 ]
             ],
@@ -51,28 +38,23 @@ class PesanSeeder extends Seeder
                 'pesan' => [
                     [
                         'judul' => 'git pull gagal (part 1)',
-                        'deskripsi' => '- Silahkan ketik ulang git config --global --add safe.directory C:/eRaporSMK/dataweb [enter]
-                        - Kemudian ketik lagi git pull [enter]',
+                        'deskripsi' => '- Silahkan ketik ulang git config --global --add safe.directory C:/eRaporSMK/dataweb [enter]'."\n".'- Kemudian ketik lagi git pull [enter]',
                     ],
                     [
                         'judul' => 'git pull gagal (part 2)',
-                        'deskripsi' => '- Silahkan ketik git stash [enter]
-                        - Kemudian ketik lagi git pull [enter]',
+                        'deskripsi' => '- Silahkan ketik git stash [enter]'."\n".'- Kemudian ketik lagi git pull [enter]',
                     ],
                     [
                         'judul' => 'git pull gagal (part 3)',
-                        'deskripsi' => '- Silahkan ketik git clean -df [enter]
-                        - Kemudian ketik lagi git pull [enter]',
+                        'deskripsi' => '- Silahkan ketik git clean -df [enter]'."\n".'- Kemudian ketik lagi git pull [enter]',
                     ],
                     [
                         'judul' => 'git pull gagal (part 4)',
-                        'deskripsi' => '- Silahkan download dulu aplikasi git melalui disini
-                        - Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
+                        'deskripsi' => '- Silahkan download dulu aplikasi git melalui disini'."\n".'- Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
                     ],
                     [
                         'judul' => 'composer update gagal',
-                        'deskripsi' => '- Silahkan download aplikasi composer disini
-                        - Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
+                        'deskripsi' => '- Silahkan download aplikasi composer disini'."\n".'- Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
                     ]
                 ]
             ]
