@@ -19,7 +19,18 @@ class PesanSeeder extends Seeder
             [
                 'judul' => 'Database',
                 'deskripsi' => 'Pertanyaan seputar pengelolaan database',
-                'childs' => [],
+                'childs' => [
+                    [
+                        'judul' => 'Sub Database 1',
+                        'deskripsi' => 'Pertanyaan seputar pengelolaan sub database 1',
+                        'pesan' => [
+                            [
+                                'judul' => 'Judul Pertanyaan seputar pengelolaan sub database 1',
+                                'deskripsi' => 'Jawaban Pertanyaan seputar pengelolaan sub database 1',
+                            ],
+                        ],
+                    ]
+                ],
                 'pesan' => [
                     [
                         'judul' => 'Cara menggunakan database versi 5.x di versi 6.x',
