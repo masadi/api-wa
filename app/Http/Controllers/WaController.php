@@ -35,6 +35,8 @@ class WaController extends Controller
             if($json['message_text_id']){
                 if(Str::contains($json['message_text_id'], 'kategori')){
                     $data_post = $this->button_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name'], $json['message_text']);
+                } elseif(Str::contains($json['message_text_id'], 'induk')){
+                    $data_post = $this->button_kategori($json['message_text_id'], $recipient_type, $to, $json['sender_push_name'], $json['message_text']);
                 } elseif(Str::contains($json['message_text_id'], 'pesan')){
                     $pesan_id = str_replace('pesan-', '', $json['message_text_id']);
                     //$data_post = $this->kirim_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
@@ -87,10 +89,8 @@ class WaController extends Controller
         return $data->deskripsi;
     }
     private function button_pesan($message_text_id, $recipient_type, $to, $nama, $judul){
-        /*$data = $this->list_text($message_text_id);
-        $data_post = $this->button_response($message_text_id, $recipient_type, $to, $nama);*/
         $message_text_id = str_replace('kategori-', '', $message_text_id);
-        $pesan = Pesan::where('kategori_id', $message_text_id)->orderBy('id')->get();
+        $pesan = Pesan::with(['kategori'])->where('kategori_id', $message_text_id)->orderBy('id')->get();
         $buttons = [];
         foreach($pesan as $p){
             $buttons[] = [
@@ -101,22 +101,35 @@ class WaController extends Controller
                 ],
             ];
         }
-        $buttons = array_merge([
-            [
-                'type' => 'reply', 
-                'reply' => [
-                    'id' => 'kategori-'.$message_text_id, 
-                    'title' => 'Menu Sebelumnya', 
+        if($kategori->induk){
+            $merger = [
+                [
+                    'type' => 'reply', 
+                    'reply' => [
+                        'id' => 'induk-'.$message_text_id, 
+                        'title' => 'Menu Sebelumnya', 
+                    ],
                 ],
-            ],
-            [
-                'type' => 'reply', 
-                'reply' => [
-                    'id' => 'back', 
-                    'title' => 'Menu Awal', 
+                [
+                    'type' => 'reply', 
+                    'reply' => [
+                        'id' => 'back', 
+                        'title' => 'Menu Awal', 
+                    ],
                 ],
-            ]
-        ], $buttons);
+            ];
+        } else {
+            $merger = [
+                [
+                    'type' => 'reply', 
+                    'reply' => [
+                        'id' => 'back', 
+                        'title' => 'Menu Awal', 
+                    ],
+                ],
+            ];
+        }
+        $buttons = array_merge($buttons, $merger);
         $data_post = [
             'recipient_type' => $recipient_type, 
             'to' => $to, 
@@ -128,6 +141,41 @@ class WaController extends Controller
                 ], 
                 'body' => [
                     'text' => 'Silahkan pilih Menu dibawah kategori '.$judul, 
+                ], 
+                'footer' => [
+                    'text' => 'Pilih Menu' 
+                ], 
+                'action' => [
+                    'buttons' => $buttons,
+                ],
+            ],
+        ]; 
+        return $data_post;
+    }
+    private function button_kategori($message_text_id, $recipient_type, $to, $nama){
+        $message_text_id = str_replace('induk-', '', $message_text_id);
+        $kategori = Kategori::where('induk', $kategori_id)->orderBy('id')->get();
+        $buttons = [];
+        foreach($kategori as $k){
+            $buttons[] = [
+                'type' => 'reply', 
+                'reply' => [
+                    'id' => 'kategori-'.$k->id, 
+                    'title' => $k->judul, 
+                ],
+            ];
+        }
+        $data_post = [
+            'recipient_type' => $recipient_type, 
+            'to' => $to, 
+            'type' => 'interactive', 
+            'interactive' => [
+                'type' => 'button', 
+                'header' => [
+                    'text' => 'Halo Bapak/Ibu '.$nama
+                ], 
+                'body' => [
+                    'text' => 'Silahkan pilih Menu Sub Kategori dibawah kategori '.$judul, 
                 ], 
                 'footer' => [
                     'text' => 'Pilih Menu' 
