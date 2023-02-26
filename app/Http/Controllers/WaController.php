@@ -54,15 +54,6 @@ class WaController extends Controller
             } else {
                 if(strtolower($json['message_text']) == 'halo'){
                     //$data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
-                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
-                } elseif(strtolower($json['message_text']) == 'Menu Awal'){
-                    //echo $int;
-                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
-                } elseif(Str::contains($json['message_text'], 'NPSN')){
-                    $int = filter_var($json['message_text'], FILTER_SANITIZE_NUMBER_INT);
-                    Storage::disk('public')->put('npsn.txt', $int);
-                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
-                } else {
                     $data_post = [
                         'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
@@ -71,9 +62,20 @@ class WaController extends Controller
                             'body' => 'Halo '.$json['sender_push_name'].'. Untuk proses tracking Bantuan, silahkan isi Data dibawah ini:'."\n"."\n".'Nama                	:'."\n".'Nama Sekolah        :'."\n".'NPSN               	:'
                         ]
                     ];
+                } elseif(strtolower($json['message_text']) == 'Menu Awal'){
+                    //echo $int;
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
+                } elseif(Str::contains($json['message_text'], 'NPSN')){
+                    $int = filter_var($json['message_text'], FILTER_SANITIZE_NUMBER_INT);
+                    Storage::disk('public')->put('npsn.txt', $int);
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
+                } else {
+                    $data_post = NULL;
                 }
             }
-            $response = Http::withToken($this->api_key)->post($this->api_url, $data_post);
+            if($data_post){
+                $response = Http::withToken($this->api_key)->post($this->api_url, $data_post);
+            }
             /*$blok = ['6285231444789', '6285231548456'];
             if(!in_array($json['sender_phone'], $blok)){
                 
