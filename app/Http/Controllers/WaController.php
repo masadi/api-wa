@@ -51,7 +51,7 @@ class WaController extends Controller
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 }
             } else {
-                if(strtolower($json['message_text']) == 'halo'){
+                if(trim(strtolower($json['message_text'])) == 'halo eraporsmk'){
                     $data_post = [
                         'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
