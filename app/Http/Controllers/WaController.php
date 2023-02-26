@@ -102,7 +102,7 @@ class WaController extends Controller
                 ],
             ];
         }
-        if($kategori->induk){
+        if($kategori->childs->count()){
             $merger = [
                 [
                     'type' => 'reply', 
