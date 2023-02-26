@@ -101,7 +101,7 @@ class WaController extends Controller
                 ],
             ];
         }
-        if($kategori->induk){
+        if($pesan->kategori->induk){
             $merger = [
                 [
                     'type' => 'reply', 
