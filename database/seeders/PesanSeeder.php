@@ -100,7 +100,7 @@ class PesanSeeder extends Seeder
                 'judul' => $k['judul'],
             ],
             [
-                'deskripsi' => $k['deskripsi'],
+                'deskripsi' => trim($k['deskripsi']),
                 'induk' => $kategori_id,
             ]
         );
@@ -111,7 +111,7 @@ class PesanSeeder extends Seeder
                 'judul' => $pesan['judul'],
             ],
             [
-                'deskripsi' => $pesan['deskripsi'],
+                'deskripsi' => trim($pesan['deskripsi']),
                 'kategori_id' => $kategori_id,
             ]
         );
