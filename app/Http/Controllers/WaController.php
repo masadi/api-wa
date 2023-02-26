@@ -64,6 +64,7 @@ class WaController extends Controller
     private function button_response($message_text_id, $recipient_type, $to, $nama){
         /*$data = $this->list_text($message_text_id);
         $data_post = $this->button_response($message_text_id, $recipient_type, $to, $nama);*/
+        $message_text_id = str_replace('id-', '', $message_text_id);
         $pesan = Pesan::where('kategori_id', $message_text_id)->orderBy('id')->get();
         $buttons = [];
         foreach($pesan as $p){
@@ -104,7 +105,7 @@ class WaController extends Controller
             $buttons[] = [
                 'type' => 'reply', 
                 'reply' => [
-                    'id' => $k->id, 
+                    'id' => 'id-'.$k->id, 
                     'title' => $k->judul, 
                 ],
             ];
