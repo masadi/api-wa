@@ -155,9 +155,11 @@ class WaController extends Controller
     }
     private function button_kategori($message_text_id, $recipient_type, $to, $nama){
         $message_text_id = str_replace('induk-', '', $message_text_id);
-        $kategori = Kategori::where('induk', $message_text_id)->orderBy('id')->get();
+        $kategori = Kategori::with(['childs' => function($query){
+            $query->orderBy('id');
+        }])->find($message_text_id);
         $buttons = [];
-        foreach($kategori as $k){
+        foreach($kategori->childs as $k){
             $buttons[] = [
                 'type' => 'reply', 
                 'reply' => [
@@ -176,7 +178,7 @@ class WaController extends Controller
                     'text' => 'Halo Bapak/Ibu '.$nama
                 ], 
                 'body' => [
-                    'text' => 'Silahkan pilih Menu Sub Kategori dibawah kategori '.$judul, 
+                    'text' => 'Silahkan pilih Menu Sub Kategori dibawah kategori '.$kategori->judul, 
                 ], 
                 'footer' => [
                     'text' => 'Pilih Menu' 
