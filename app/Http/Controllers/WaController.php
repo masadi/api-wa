@@ -155,7 +155,7 @@ class WaController extends Controller
     }
     private function button_kategori($message_text_id, $recipient_type, $to, $nama){
         $message_text_id = str_replace('induk-', '', $message_text_id);
-        $kategori = Kategori::where('induk', $kategori_id)->orderBy('id')->get();
+        $kategori = Kategori::where('induk', $message_text_id)->orderBy('id')->get();
         $buttons = [];
         foreach($kategori as $k){
             $buttons[] = [
