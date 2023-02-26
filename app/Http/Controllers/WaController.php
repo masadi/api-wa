@@ -52,8 +52,9 @@ class WaController extends Controller
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 }
             } else {
-                if(strtolower($json['message_text']) == 'list'){
-                    $data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
+                if(strtolower($json['message_text']) == 'halo'){
+                    //$data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 } elseif(strtolower($json['message_text']) == 'Menu Awal'){
                     //echo $int;
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
