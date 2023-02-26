@@ -42,7 +42,7 @@ class WaController extends Controller
                         "body" => 'Halo '.$json['sender_push_name'].'. Ini adalah jawaban otomatis'
                     ]
                 ];
-                $response = Http::withToken($token)->post($url, $data_post);
+                $response = Http::withToken($this->api_key)->post($this->api_url, $data_post);
             }
         } else {
             $data = [];
