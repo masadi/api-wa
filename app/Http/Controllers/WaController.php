@@ -35,7 +35,7 @@ class WaController extends Controller
             if($json['message_text_id']){
                 if(Str::contains($json['message_text_id'], 'kategori')){
                     $data_post = $this->button_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name'], $json['message_text']);
-                } else {
+                } elseif(Str::contains($json['message_text_id'], 'pesan')){
                     $pesan_id = str_replace('pesan-', '', $json['message_text_id']);
                     //$data_post = $this->kirim_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
                     $data_post = [
@@ -46,11 +46,13 @@ class WaController extends Controller
                             'body' => $this->kirim_pesan($pesan_id)
                         ]
                     ];
+                } else {
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 }
             } else {
                 if(strtolower($json['message_text']) == 'list'){
                     $data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
-                } elseif(strtolower($json['message_text']) == 'button'){
+                } elseif(strtolower($json['message_text']) == 'Menu Awal'){
                     //echo $int;
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 } elseif(Str::contains($json['message_text'], 'NPSN')){
@@ -99,6 +101,22 @@ class WaController extends Controller
                 ],
             ];
         }
+        $buttons = array_merge([
+            [
+                'type' => 'reply', 
+                'reply' => [
+                    'id' => 'kategori-'.$message_text_id, 
+                    'title' => 'Menu Sebelumnya', 
+                ],
+            ],
+            [
+                'type' => 'reply', 
+                'reply' => [
+                    'id' => 'back', 
+                    'title' => 'Menu Awal', 
+                ],
+            ]
+        ], $buttons);
         $data_post = [
             'recipient_type' => $recipient_type, 
             'to' => $to, 
