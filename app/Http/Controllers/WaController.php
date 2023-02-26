@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Models\Kategori;
 use App\Models\Pesan;
@@ -32,7 +33,20 @@ class WaController extends Controller
             $recipient_type = ($json['is_group']) ? 'group' : 'individual';
             $to = ($json['is_group']) ? $json['chat'] : $json['sender_phone'];
             if($json['message_text_id']){
-                $data_post = $this->button_response($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
+                if(Str::contains($json['message_text_id'], 'kategori')){
+                    $data_post = $this->button_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name'], $json['message_text']);
+                } else {
+                    $pesan_id = str_replace('pesan-', '', $json['message_text_id']);
+                    //$data_post = $this->kirim_pesan($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
+                    $data_post = [
+                        'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
+                        'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
+                        'type' => 'text',
+                        'text' => [
+                            'body' => $this->kirim_pesan($pesan_id)
+                        ]
+                    ];
+                }
             } else {
                 if(strtolower($json['message_text']) == 'list'){
                     $data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
@@ -61,17 +75,21 @@ class WaController extends Controller
             return response()->json($data);
         }
     }
-    private function button_response($message_text_id, $recipient_type, $to, $nama){
+    private function kirim_pesan($pesan_id){
+        $data = Pesan::find($find);
+        return $data->deskripsi;
+    }
+    private function button_pesan($message_text_id, $recipient_type, $to, $nama, $judul){
         /*$data = $this->list_text($message_text_id);
         $data_post = $this->button_response($message_text_id, $recipient_type, $to, $nama);*/
-        $message_text_id = str_replace('id-', '', $message_text_id);
+        $message_text_id = str_replace('kategori-', '', $message_text_id);
         $pesan = Pesan::where('kategori_id', $message_text_id)->orderBy('id')->get();
         $buttons = [];
         foreach($pesan as $p){
             $buttons[] = [
                 'type' => 'reply', 
                 'reply' => [
-                    'id' => $p->id, 
+                    'id' => 'pesan-'.$p->id, 
                     'title' => $p->judul, 
                 ],
             ];
@@ -83,10 +101,10 @@ class WaController extends Controller
             'interactive' => [
                 'type' => 'button', 
                 'header' => [
-                    'text' => 'Halo Bapak/Ibu '.$nama
+                    'text' => 'Pertanyaan Seputar '.$judul
                 ], 
                 'body' => [
-                    'text' => 'Selamat Datang di Pusat Bantuan Aplikasi e-Rapor SMK. Silahkan pilih Menu dibawah ini sesuai permasalahan yang Anda temukan!' 
+                    'text' => 'Silahkan pilih Menu dibawah kategori '.$judul, 
                 ], 
                 'footer' => [
                     'text' => 'Pilih Menu' 
@@ -105,7 +123,7 @@ class WaController extends Controller
             $buttons[] = [
                 'type' => 'reply', 
                 'reply' => [
-                    'id' => 'id-'.$k->id, 
+                    'id' => 'kategori-'.$k->id, 
                     'title' => $k->judul, 
                 ],
             ];
