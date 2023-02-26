@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Kategori;
+use App\Models\Pesan;
 use Storage;
 use Artisan;
 
@@ -29,19 +31,23 @@ class WaController extends Controller
             Storage::disk('public')->put('sender.txt', $json['sender']);*/
             $recipient_type = ($json['is_group']) ? 'group' : 'individual';
             $to = ($json['is_group']) ? $json['chat'] : $json['sender_phone'];
-            if(strtolower($json['message_text']) == 'list'){
-                $data_post = $this->interactive($recipient_type, $to);
-            } elseif(strtolower($json['message_text']) == 'button'){
-                $data_post = $this->button($recipient_type, $to);
+            if($json['message_text_id']){
+                $data_post = $this->button_response($json['message_text_id'], $recipient_type, $to, $json['sender_push_name']);
             } else {
-                $data_post = [
-                    'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
-                    'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
-                    'type' => 'text',
-                    'text' => [
-                        'body' => 'Halo '.$json['sender_push_name'].'. Ini adalah jawaban otomatis'
-                    ]
-                ];
+                if(strtolower($json['message_text']) == 'list'){
+                    $data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
+                } elseif(strtolower($json['message_text']) == 'button'){
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
+                } else {
+                    $data_post = [
+                        'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
+                        'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
+                        'type' => 'text',
+                        'text' => [
+                            'body' => 'Halo '.$json['sender_push_name'].'. Ini adalah jawaban otomatis'
+                        ]
+                    ];
+                }
             }
             $response = Http::withToken($this->api_key)->post($this->api_url, $data_post);
             /*$blok = ['6285231444789', '6285231548456'];
@@ -55,7 +61,89 @@ class WaController extends Controller
             return response()->json($data);
         }
     }
-    private function interactive($recipient_type, $to){
+    private function button_response($message_text_id, $recipient_type, $to, $nama){
+        /*$data = $this->list_text($message_text_id);
+        $data_post = $this->button_response($message_text_id, $recipient_type, $to, $nama);*/
+        $pesan = Pesan::where('kategori_id', $message_text_id)->orderBy('id')->get();
+        $buttons = [];
+        foreach($pesan as $p){
+            $buttons[] = [
+                'type' => 'reply', 
+                'reply' => [
+                    'id' => $p->id, 
+                    'title' => $p->judul, 
+                ],
+            ];
+        }
+        $data_post = [
+            'recipient_type' => $recipient_type, 
+            'to' => $to, 
+            'type' => 'interactive', 
+            'interactive' => [
+                'type' => 'button', 
+                'header' => [
+                    'text' => 'Halo Bapak/Ibu '.$nama
+                ], 
+                'body' => [
+                    'text' => 'Selamat Datang di Pusat Bantuan Aplikasi e-Rapor SMK. Silahkan pilih Menu dibawah ini sesuai permasalahan yang Anda temukan!' 
+                ], 
+                'footer' => [
+                    'text' => 'Pilih Menu' 
+                ], 
+                'action' => [
+                    'buttons' => $buttons,
+                ],
+            ],
+        ]; 
+        return $data_post;
+    }
+    private function button($recipient_type, $to, $nama){
+        $kategori = Kategori::orderBy('id')->get();
+        $buttons = [];
+        foreach($kategori as $k){
+            $buttons[] = [
+                'type' => 'reply', 
+                'reply' => [
+                    'id' => $k->id, 
+                    'title' => $k->judul, 
+                ],
+            ];
+        }
+        $data_post = [
+            'recipient_type' => $recipient_type, 
+            'to' => $to, 
+            'type' => 'interactive', 
+            'interactive' => [
+                'type' => 'button', 
+                'header' => [
+                    'text' => 'Halo Bapak/Ibu '.$nama
+                ], 
+                'body' => [
+                    'text' => 'Selamat Datang di Pusat Bantuan Aplikasi e-Rapor SMK. Silahkan pilih Menu dibawah ini sesuai permasalahan yang Anda temukan!' 
+                ], 
+                'footer' => [
+                    'text' => 'Pilih Menu' 
+                ], 
+                'action' => [
+                    'buttons' => $buttons,
+                ],
+            ],
+        ]; 
+        return $data_post;
+    }
+    private function list_text($message_text_id){
+        $collection = collect([
+            ['message_text_id' => 1, 'title' => 'Merah', 'description' => 'Deskripsi warna Merah'],
+            ['message_text_id' => 2, 'title' => 'Putih', 'description' => 'Deskripsi warna Putih'],
+            ['message_text_id' => 3, 'title' => 'Hijau', 'description' => 'Deskripsi warna Hijau'],
+            ['message_text_id' => 4, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
+            ['message_text_id' => 5, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
+            ['message_text_id' => 6, 'title' => 'Hitam', 'description' => 'Deskripsi warna Hitam'],
+        ]);
+        return $collection->firstWhere('message_text_id', $message_text_id);
+        //return $collection;
+    }
+    private function interactive($recipient_type, $to, $nama){
         $data_post = [
             'recipient_type' => $recipient_type, 
             'to' => $to, 
@@ -63,7 +151,7 @@ class WaController extends Controller
             'interactive' => [
                 'type' => 'list', 
                 'header' => [
-                    'text' => 'Ini adalah header' 
+                    'text' => 'Halo Bapak/Ibu '.$nama 
                 ], 
                 'body' => [
                     'text' => 'Silahkan lengkapi alamat Anda terlebih dahulu' 
@@ -103,72 +191,6 @@ class WaController extends Controller
                 ],
             ],
         ];
-        return $data_post;
-    }
-    private function button($recipient_type, $to){
-        $data_post = [
-            'recipient_type' => $recipient_type, 
-            'to' => $to, 
-            'type' => 'interactive', 
-            'interactive' => [
-                'type' => 'button', 
-                'header' => [
-                    'text' => 'Ini adalah header button' 
-                ], 
-                'body' => [
-                    'text' => 'Test button with header text.' 
-                ], 
-                'footer' => [
-                    'text' => 'Pilihan jumlah donasi' 
-                ], 
-                'action' => [
-                    'buttons' => [
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp25000', 
-                                'title' => 'Rp25.000,-' 
-                            ],
-                        ], 
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp50000', 
-                                'title' => 'Rp50.000,-' 
-                            ],
-                        ], 
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp100000', 
-                                'title' => 'Rp100.000,-' 
-                            ],
-                        ], 
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp250000', 
-                                'title' => 'Rp250.000' 
-                            ],
-                        ], 
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp500000', 
-                                'title' => 'Rp500.000' 
-                            ],
-                        ], 
-                        [
-                            'type' => 'reply', 
-                            'reply' => [
-                                'id' => 'rp1000000', 
-                                'title' => 'Rp1.000.000' 
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]; 
         return $data_post;
     }
 }
