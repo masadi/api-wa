@@ -188,7 +188,7 @@ class WaController extends Controller
         return $data_post;
     }
     private function button($recipient_type, $to, $nama){
-        $kategori = Kategori::orderBy('id')->get();
+        $kategori = Kategori::whereNull('induk')->orderBy('id')->get();
         $buttons = [];
         foreach($kategori as $k){
             $buttons[] = [
