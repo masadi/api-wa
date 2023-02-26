@@ -59,7 +59,7 @@ class WaController extends Controller
                         'to' => ($json['is_group']) ? $json['chat'] : $json['sender_phone'],
                         'type' => 'text',
                         'text' => [
-                            'body' => 'Halo '.$json['sender_push_name'].'. Untuk proses tracking Bantuan, silahkan isi Data dibawah ini:'."\n"."\n".'Nama                	:'."\n".'Nama Sekolah        :'."\n".'NPSN               	:'
+                            'body' => 'Halo '.$json['sender_push_name'].'. Selamat Datang di Pusat Bantuan Aplikasi e-Rapor SMK.'."\n".'Untuk proses tracking Bantuan, silahkan isi Data dibawah ini:'."\n"."\n".'Nama                	:'."\n".'Nama Sekolah        :'."\n".'NPSN               	:'
                         ]
                     ];
                 } elseif(strtolower($json['message_text']) == 'Menu Awal'){
@@ -216,7 +216,7 @@ class WaController extends Controller
                     'text' => 'Halo Bapak/Ibu '.$nama
                 ], 
                 'body' => [
-                    'text' => 'Selamat Datang di Pusat Bantuan Aplikasi e-Rapor SMK. Silahkan pilih Menu dibawah ini sesuai permasalahan yang Anda temukan!' 
+                    'text' => 'Silahkan pilih Menu dibawah ini sesuai permasalahan yang Anda temukan!' 
                 ], 
                 'footer' => [
                     'text' => 'Pilih Menu' 
