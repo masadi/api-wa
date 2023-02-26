@@ -18,7 +18,8 @@ class WaController extends Controller
         if (request()->isMethod('post')) {
             $rawdata = file_get_contents('php://input');
             $json = json_decode($rawdata, true);
-            Storage::disk('public')->put('test.json', json_encode($json));
+            $file = str_replace(' ', '-', strtolower($json['message_text']));
+            Storage::disk('public')->put($file.'.json', json_encode($json));
             /*Storage::disk('public')->put('sender.txt', $json['sender']);
             Storage::disk('public')->put('sender_phone.txt', $json['sender_phone']);
             Storage::disk('public')->put('chat.txt', $json['chat']);
@@ -26,11 +27,12 @@ class WaController extends Controller
             Storage::disk('public')->put('message_id.txt', $json['message_id']);
             Storage::disk('public')->put('sender.txt', $json['sender']);
             Storage::disk('public')->put('sender.txt', $json['sender']);*/
-            $type = 'text';
-            if(strtolower($json['message_text']) == 'halo'){
-                $recipient_type = ($json['is_group']) ? 'group' : 'individual';
-                $to = ($json['is_group']) ? $json['chat'] : $json['sender_phone'];
+            $recipient_type = ($json['is_group']) ? 'group' : 'individual';
+            $to = ($json['is_group']) ? $json['chat'] : $json['sender_phone'];
+            if(strtolower($json['message_text']) == 'list'){
                 $data_post = $this->interactive($recipient_type, $to);
+            } elseif(strtolower($json['message_text']) == 'button'){
+                $data_post = $this->button($recipient_type, $to);
             } else {
                 $data_post = [
                     'recipient_type' => ($json['is_group']) ? 'group' : 'individual',
@@ -101,6 +103,72 @@ class WaController extends Controller
                 ],
             ],
         ];
+        return $data_post;
+    }
+    private function button($recipient_type, $to){
+        $data_post = [
+            'recipient_type' => $recipient_type, 
+            'to' => $to, 
+            'type' => 'interactive', 
+            'interactive' => [
+                'type' => 'button', 
+                'header' => [
+                    'text' => 'Ini adalah header button' 
+                ], 
+                'body' => [
+                    'text' => 'Test button with header text.' 
+                ], 
+                'footer' => [
+                    'text' => 'Pilihan jumlah donasi' 
+                ], 
+                'action' => [
+                    'buttons' => [
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp25000', 
+                                'title' => 'Rp25.000,-' 
+                            ],
+                        ], 
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp50000', 
+                                'title' => 'Rp50.000,-' 
+                            ],
+                        ], 
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp100000', 
+                                'title' => 'Rp100.000,-' 
+                            ],
+                        ], 
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp250000', 
+                                'title' => 'Rp250.000' 
+                            ],
+                        ], 
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp500000', 
+                                'title' => 'Rp500.000' 
+                            ],
+                        ], 
+                        [
+                            'type' => 'reply', 
+                            'reply' => [
+                                'id' => 'rp1000000', 
+                                'title' => 'Rp1.000.000' 
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]; 
         return $data_post;
     }
 }
