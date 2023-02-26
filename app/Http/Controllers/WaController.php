@@ -90,7 +90,8 @@ class WaController extends Controller
     }
     private function button_pesan($message_text_id, $recipient_type, $to, $nama, $judul){
         $message_text_id = str_replace('kategori-', '', $message_text_id);
-        $pesan = Pesan::with(['kategori'])->where('kategori_id', $message_text_id)->orderBy('id')->get();
+        $pesan = Pesan::where('kategori_id', $message_text_id)->orderBy('id')->get();
+        $kategori = kategori::find($message_text_id);
         $buttons = [];
         foreach($pesan as $p){
             $buttons[] = [
@@ -101,7 +102,7 @@ class WaController extends Controller
                 ],
             ];
         }
-        if($pesan->kategori->induk){
+        if($kategori->induk){
             $merger = [
                 [
                     'type' => 'reply', 
