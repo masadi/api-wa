@@ -51,6 +51,11 @@ class WaController extends Controller
                 if(strtolower($json['message_text']) == 'list'){
                     $data_post = $this->interactive($recipient_type, $to, $json['sender_push_name']);
                 } elseif(strtolower($json['message_text']) == 'button'){
+                    //echo $int;
+                    $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
+                } elseif(Str::contains($json['message_text'], 'NPSN')){
+                    $int = filter_var($json['message_text'], FILTER_SANITIZE_NUMBER_INT);
+                    Storage::disk('public')->put('npsn.txt', $int);
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 } else {
                     $data_post = [
