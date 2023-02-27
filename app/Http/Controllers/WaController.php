@@ -16,6 +16,7 @@ class WaController extends Controller
     {
         $this->api_url = config('wa.api_url');
         $this->api_key = config('wa.api_key');
+        $this->dashboard_url= config('wa.dashboard_url');;
     }
     public function index(){
         if (request()->isMethod('post')) {
@@ -68,6 +69,14 @@ class WaController extends Controller
                     $data_post = $this->button($recipient_type, $to, $json['sender_push_name']);
                 } else {
                     $data_post = NULL;
+                    if($json['chat'] == '120363044472878362@g.us' && $this->dashboard_url){
+                        $post_data = [
+                            'sender_phone' => $json['sender_phone'],
+                            'sender_push_name' => $json['sender_push_name'],
+                            'body' => str_replace('dashboard:', '', $json['message_text'])
+                        ];
+                        Http::post($this->dashboard_url, $post_data);
+                    }
                 }
             }
             if($data_post){
