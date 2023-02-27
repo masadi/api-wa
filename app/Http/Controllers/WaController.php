@@ -22,8 +22,8 @@ class WaController extends Controller
             $rawdata = file_get_contents('php://input');
             $json = json_decode($rawdata, true);
             $file = str_replace(' ', '-', strtolower($json['message_text']));
-            /*Storage::disk('public')->put($file.'.json', json_encode($json));
-            Storage::disk('public')->put('sender.txt', $json['sender']);
+            Storage::disk('public')->put('asd.json', json_encode($json));
+            /*Storage::disk('public')->put('sender.txt', $json['sender']);
             Storage::disk('public')->put('sender_phone.txt', $json['sender_phone']);
             Storage::disk('public')->put('chat.txt', $json['chat']);
             Storage::disk('public')->put('sender_push_name.txt', $json['sender_push_name']);
