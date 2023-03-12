@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WaController;
+use App\Http\Controllers\OnesenderController;
+use App\Http\Controllers\WatsapController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,8 +14,10 @@ use App\Http\Controllers\WaController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('response', [WaController::class, 'index']);
-Route::get('response', [WaController::class, 'index']);
+Route::post('response', [OnesenderController::class, 'index']);
+Route::get('response', [OnesenderController::class, 'index']);
+Route::post('watsap-id', [WatsapController::class, 'index']);
+Route::get('watsap-id', [WatsapController::class, 'index']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
