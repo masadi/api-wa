@@ -21,21 +21,20 @@ class WatsapController extends Controller
             Storage::disk('public')->put('watsap_api.json', json_encode($json));
             $message = strtolower($json['message']);
             $from = strtolower($json['from']);
-            $respon = false;
+            $data = false;
             if($message === 'hai'){
-                $respon = $this->sayHello();
+                $data = $this->sayHello();
             } else if($message === 'gambar'){
-                $respon = $this->gambar();
+                $data = $this->gambar();
             } else if($message === 'tes button'){
-                $respon = $this->button();
+                $data = $this->button();
             } else if($message === 'lists msg'){
-                $respon = $this->lists();
+                $data = $this->lists();
             }
-            echo json_encode($respon);
         } else {
-            $data = ['login' => 'Unauthorized'];
-            return response()->json($data);
+            $data = ['api' => 'Unauthorized'];
         }
+        return response()->json($data);
     }
     private function sayHello(){    
         return ["text" => 'Halloooo!'];
