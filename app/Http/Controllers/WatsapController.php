@@ -84,7 +84,7 @@ class WatsapController extends Controller
             'number' => '6287864496339',
             'message' => 'Your message'
         ];
-        $response = Http::withToken($this->api_key)->post($this->api_url, $data_post);
+        $response = Http::withToken($this->api_key)->post($this->api_url.'send-message', $data_post);
         return response()->json($response->json());
     }
 }
