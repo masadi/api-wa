@@ -15,7 +15,8 @@ class WatsapController extends Controller
         $this->dashboard_url= config('wa.dashboard_url');;
     }
     public function index(){
-        $rawdata = file_get_contents('php://input');
+        if (request()->isMethod('post')) {
+            $rawdata = file_get_contents('php://input');
             $json = json_decode($rawdata, true);
             Storage::disk('public')->put('watsap_api.json', json_encode($json));
             $message = strtolower($json['message']);
@@ -31,6 +32,10 @@ class WatsapController extends Controller
                 $respon = $this->lists();
             }
             echo json_encode($respon);
+        } else {
+            $data = ['login' => 'Unauthorized'];
+            return response()->json($data);
+        }
     }
     private function sayHello(){    
         return ["text" => 'Halloooo!'];
