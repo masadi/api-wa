@@ -18,8 +18,8 @@ class WatsapController extends Controller
         $rawdata = file_get_contents('php://input');
             $json = json_decode($rawdata, true);
             Storage::disk('public')->put('watsap_api.json', json_encode($json));
-            $message = strtolower($data['message']);
-            $from = strtolower($data['from']);
+            $message = strtolower($json['message']);
+            $from = strtolower($json['from']);
             $respon = false;
             if($message === 'hai'){
                 $respon = $this->sayHello();
