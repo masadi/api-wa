@@ -40,7 +40,7 @@
         });
         console.log(socket);
         console.log(socket.connected);
-        socket.emit('log', 'asd')
+        socket.emit('connection', 'asd')
         socket.on("connection", t => {
             console.log(t);
         })
