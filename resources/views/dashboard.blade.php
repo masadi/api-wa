@@ -38,7 +38,7 @@
             transports: ['websocket', 'polling', 'flashsocket']
         });
         if (socket.connected) {
-            //socket.emit( /* ... */ );
+            console.log(socket);
         } else {
             socket.emit('connection', 'asd')
         }
@@ -46,7 +46,6 @@
         socket.on("opening", t => {
             console.log(t);
         })
-        console.log(socket);
         socket.on("qr", src => {
             console.log(src);
             qrcode.setAttribute("src", src);
