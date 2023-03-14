@@ -34,16 +34,17 @@
     <script>
         const qrcode = document.getElementById("qrcode");
         //const socket = io();
-        const socket = io('http://server.mas-adi.net:8080', {
+        const socket = io.connect('http://server.mas-adi.net:8080', {
             transports: ['websocket', 'polling', 'flashsocket']
         });
         if (socket.connected) {
             console.log(socket);
         } else {
-            socket.emit('connection', 'asd')
+            //socket.emit('connection', 'asd')
         }
-        socket.emit('connection', 'asd')
-        socket.on("opening", t => {
+        console.log(socket.connected);
+        //socket.emit('connection', 'asd')
+        socket.on("connection", t => {
             console.log(t);
         })
         socket.on("qr", src => {
@@ -52,6 +53,7 @@
             qrcode.setAttribute("alt", "qrcode");
         });
         socket.on("qrstatus", src => {
+            console.log(socket.connected);
             console.log(src);
             qrcode.setAttribute("src", src);
             qrcode.setAttribute("alt", "loading");
