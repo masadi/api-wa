@@ -37,11 +37,7 @@
         const socket = io.connect('http://server.mas-adi.net:8080', {
             transports: ['websocket', 'polling', 'flashsocket']
         });
-        if (socket.connected) {
-            console.log(socket);
-        } else {
-            //socket.emit('connection', 'asd')
-        }
+        console.log(socket);
         console.log(socket.connected);
         //socket.emit('connection', 'asd')
         socket.on("connection", t => {
