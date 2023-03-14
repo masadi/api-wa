@@ -38,6 +38,9 @@
         const socket = io.connect('http://server.mas-adi.net:8080', {
             transports: ['websocket', 'polling', 'flashsocket']
         });
+        socket.on("connect_error", (err) => {
+            console.log(`connect_error due to ${err.message}`);
+        });
         console.log(socket);
         console.log(socket.connected);
         if(!socket.id){
