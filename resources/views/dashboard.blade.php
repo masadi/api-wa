@@ -38,7 +38,7 @@
             transports: ['websocket', 'polling', 'flashsocket']
         });
         socket.emit('connection', 'asd')
-        socket.on("qr", t => {
+        socket.on("opening", t => {
             console.log(t);
         })
         console.log(socket);
