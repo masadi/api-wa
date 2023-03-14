@@ -32,6 +32,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js" crossorigin="anonymous"></script>
     <script>
+        const id = '{{Illuminate\Support\Str::random(20)}}'
         const qrcode = document.getElementById("qrcode");
         //const socket = io();
         const socket = io.connect('http://server.mas-adi.net:8080', {
@@ -39,7 +40,7 @@
         });
         console.log(socket);
         console.log(socket.connected);
-        //socket.emit('connection', 'asd')
+        socket.emit('log', 'asd')
         socket.on("connection", t => {
             console.log(t);
         })
@@ -56,6 +57,8 @@
         });
         socket.on("log", log => {
             console.log(log);
+            console.log(socket.id);
+            console.log(id);
         })
     </script>
 </x-app-layout>
