@@ -32,28 +32,16 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js" crossorigin="anonymous"></script>
     <script>
-        const id = '{{ Illuminate\Support\Str::random(20) }}'
         const qrcode = document.getElementById("qrcode");
         //const socket = io();
-        const socket = io.connect('http://server.mas-adi.net:8080', {
+        /*const socket = io('http://server.mas-adi.net:8080', {
             transports: ['websocket', 'polling', 'flashsocket']
+        });*/
+        const socket = io('http://server.mas-adi.net:8080', {
+            transports: ['websocket', 'polling', 'flashsocket'],
         });
         socket.on("connect_error", (err) => {
             console.log(`connect_error due to ${err.message}`);
-        });
-        console.log(socket);
-        console.log(socket.connected);
-        if (!socket.id) {
-            socket.id = id
-        }
-        socket.emit("connection", "asd", (response) => {
-            console.log(response); // "got it"
-        });
-        socket.on("connection", t => {
-            console.log(t);
-        })
-        socket.on("connect", a => {
-            console.log(a);
         });
         socket.on("qr", src => {
             console.log(src);
@@ -61,15 +49,13 @@
             qrcode.setAttribute("alt", "qrcode");
         });
         socket.on("qrstatus", src => {
-            console.log(socket.connected);
-            console.log(src);
             qrcode.setAttribute("src", src);
             qrcode.setAttribute("alt", "loading");
         });
         socket.on("log", log => {
             console.log(log);
-            console.log(socket.id);
-            console.log(id);
+            //console.log(socket.id);
+            //console.log(id);
         })
     </script>
 </x-app-layout>
