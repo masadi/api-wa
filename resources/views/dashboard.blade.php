@@ -37,7 +37,8 @@
         const socket = io('http://server.mas-adi.net:8080', {
             transports: ['websocket', 'polling', 'flashsocket']
         });
-        socket.emit('connection', 'asd'), socket.on("qr", t => {
+        socket.emit('connection', 'asd')
+        socket.on("qr", t => {
             console.log(t);
         })
         console.log(socket);
